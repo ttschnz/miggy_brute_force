@@ -6,7 +6,7 @@ use serde_json::Value;
 use colored::Colorize;
 use std::io;
 use std::io::Write;
-
+use ansi_term;
 // This is using the `tokio` runtime. You'll need the following dependency:
 //
 // `tokio = { version = "1", features = ["full"] }`
@@ -14,6 +14,7 @@ use std::io::Write;
 #[tokio::main]
 async fn main() -> Result<(), reqwest::Error> {
     use std::{time::Duration};
+    ansi_term::enable_ansi_support().expect("Failed to enable ANSI support");
 
     let mut cookies = String::new();
     println!("Head over to (https://win.migros.ch/promos/) and paste the cookie data from your browser: ");
