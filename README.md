@@ -24,7 +24,7 @@ Querying the Migros-API at https://web-api.migros.ch/widgets/stores, the followi
 
 <details>
 
-<summary>List of branches</summary>
+<summary><b>List of branches</b></summary>
 
 | branch name                                   | branch-code |
 | --------------------------------------------- | ----------- |
@@ -1217,10 +1217,6 @@ As a four-digit number, the Bon ID can range from `0000` to `9999` thus giving a
 
 The price attribute is a 9-digit number that can be any value between zero (`000000000`) and `999999999`. The last two digits represent the centime, while the first 7 digits are the francs. Contrary to the swiss centime system, the centime does not have to be divisible by five.
 
-## DISCLAIMER
-
-This repo contains scripts that can be used for hacking. The distributor clearly states that the scripts are for education purposes only but provide a fully functional piece of hacking software.
-
 ## Instructions
 
 ### Building
@@ -1238,7 +1234,7 @@ Prerequisites: rust compiler and cargo installed
    1. Create an account for https://win.migros.ch/promos/de/
    2. Open the developer options (<kbd>F12</kbd>, <kbd>ctrl</kbd>+<kbd>I</kbd>, or <kbd>⌘</kbd>+<kbd>I</kbd>)
    3. Navigate to the Network tab
-   4. Enter a random bon matching the desctiption
+   4. Enter a random bon matching the [Description](#description)
    5. Look for a request with the name `play.php`
    6. Click on it
    7. Scroll down to `Request Headers`
@@ -1250,3 +1246,7 @@ Prerequisites: rust compiler and cargo installed
 ### Platform Compatibility
 
 The code builds and runs on Windows and Linux (both tested) and should compile on MacOS aswell, which has not been tested.
+
+## DISCLAIMER
+
+This repo contains scripts that can be used for hacking. The distributor clearly states that the scripts are for education purposes only but provide a fully functional piece of hacking software.
