@@ -6,7 +6,9 @@ use serde_json::Value;
 use colored::Colorize;
 use std::io;
 use std::io::Write;
-use ansi_term;
+
+#[cfg(target_os = "windows")]
+extern crate ansi_term;
 // This is using the `tokio` runtime. You'll need the following dependency:
 //
 // `tokio = { version = "1", features = ["full"] }`
@@ -14,6 +16,8 @@ use ansi_term;
 #[tokio::main]
 async fn main() -> Result<(), reqwest::Error> {
     use std::{time::Duration};
+    // only run ansi_term::enable_ansi_support if the platform is windows
+    #[cfg(target_os = "windows")]
     ansi_term::enable_ansi_support().expect("Failed to enable ANSI support");
 
     let mut cookies = String::new();
