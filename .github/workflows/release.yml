@@ -1,0 +1,84 @@
+name: "pre-release"
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  check-for-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      changes: ${{ steps.filter.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            changed:
+              - '**.toml'
+              - '**.rs'
+              - '**.yml'
+  build:
+    needs: check-for-changes
+    if: ${{ needs.check-for-changes.outputs.changes == 'true' }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-12
+          - ubuntu-20.04
+          - windows-2019
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        run: cargo build --verbose --target-dir build -r
+      - name: Temporarily save Build (win)
+        if: ${{ matrix.os == 'windows-2019' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-2019
+          path: build/release/miggy_brute_force.exe
+          retention-days: 1
+      - name: Temporarily save Build (linux & macos)
+        if: ${{ matrix.os != 'windows-2019' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}
+          path: build/release/miggy_brute_force
+          retention-days: 1
+  release:
+    needs:
+      - check-for-changes
+      - build
+    if: ${{ needs.check-for-changes.outputs.changes == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Linux Build
+        uses: actions/download-artifact@master
+        with:
+          name: ubuntu-20.04
+
+      - name: Download MacOs Build
+        uses: actions/download-artifact@master
+        with:
+          name: macos-12
+
+      - name: Download Windows Build
+        uses: actions/download-artifact@master
+        with:
+          name: windows-2019
+
+      - name: Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            - windows-2019
+            - macos-12
+            - ubuntu-20.04
