@@ -1,5 +1,7 @@
 # Miggy is not save
 
+[![builds](https://github.com/ttschnz/miggy_brute_force/actions/workflows/rust.yml/badge.svg)](https://github.com/ttschnz/miggy_brute_force/actions/workflows/rust.yml)
+
 ## DISCLAIMER
 
 This repo contains scripts that can be used for hacking. The distributor clearly states that the scripts are for education purposes only but provide a fully functional piece of hacking software.
